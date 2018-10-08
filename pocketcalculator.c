@@ -1,99 +1,103 @@
-/*----------------------------------------------------------
- *				HTBLA-Leonding / Class: 2AHIF
- * ---------------------------------------------------------
- * Exercise Number: 2
- * Title:			Pocketcalaculator
- * Author:			Rieser Felix
- * ----------------------------------------------------------
- * Description:
- * A Calucalor, who can add, subtract, mulitply and divide.
- * ----------------------------------------------------------
- */
-
 #include <stdio.h>
-int main(int argc, char const *argv[]) {
+#include <float.h>
+int main(int argc, char const *argv[])
+{
+   double* firstNumber;
+   double* secondNumber;
+   int choice;
 
-  int selection = displayMenu();
-  execute(selection);
+   choice = PrintMenu();
+   GetOperants(&firstNumber, &secondNumber);
+   ExecuteOption(choice, &firstNumber, &secondNumber);
+
+  return 0;
 }
 
-int displayMenu(){
-
-    int selection;
-
-    printf("add      (1)\n");
-    printf("subtract (2)\n");
-    printf("divide   (3)\n");
-    printf("multiply (4)\n");
-    printf("stop     (-1)\n");
-
-    scanf("%d : \n", &selection );
-
-    return selection;
+void PrintMenu()
+{
+  int choice;
+  printf("Add (1), Subtract (2), Multiply (3), Divide (4), Stop program(-1) Enter your choice: ");
+  scanf("%d", &choice);
 }
-
-void execute(int selection){
-
-  double firstAdd;
-  double secondAdd;
-
-  switch (selection) {
-      case 1:
-
-        firstAdd  =  getOperands();
-        secondAdd =  getOperands();
-
-        int res = add(firstAdd, secondAdd);
-
-        printResults(res);
-
-        break;
-      case 2:
-
-        subtract();
-
-        break;
-      case 3:
-
-        divide();
-
-        break;
-      case 4:
-
-        multiply();
-
-        break;
-      case -1:
-
-        break;
-
-      default:
-
-      printf("Ungültige eingabe!");
-
+void ExecuteOption(int choice, double firstNumber, double secondNumber)
+{
+  switch (choice) {
+    case 1:
+      Add(firstNumber, secondNumber);
       break;
+    case 2:
+      Subtract(firstNumber, secondNumber);
+      break;
+    case 3:
+     Multiply(firstNumber, secondNumber);
+      break;
+    case 4:
+      Divide(firstNumber, secondNumber);
+      break;
+      case -1:
+      break;
+      default:
+        printf("inavlid input, please try again\n");
+        PrintMenu();
+        break;
+  }
+}
+
+  void GetOperants(double* firstNumber, double* secondNumber)
+{
+    printf("First operand: ");
+    scanf("%lf\n", firstNumber);
+
+    printf("Second operand: ");
+    scanf("%lf\n", secondNumber);
+  }
+
+  void Add(double firstNum, double secondNum)
+  {
+      int result =  firstNum + secondNum;
+      PrintResult(result);
+
+  }
+  void Subtract(double firstNum, double secondNum)
+  {
+      int result = firstNum - secondNum;
+      PrintResult(result);
+  }
+
+  void Multiply(double firstNum, double secondNum) {
+    int result =  firstNum * secondNum;
+    PrintResult(result);
+  }
+
+  void Divide(double firstNum, double secondNum)
+  {
+    int result;
+    if (secondNum == 0) {
+      GetOperants(&firstNum, &secondNum);
     }
-}
+    else{
+      result =  firstNum / secondNum;
+      PrintResult(result);
+    }
+  }
 
-int getOperandsperants(){
+  void PrintResult(double result)
+  {
+    if(result < DBL_MIN ){
 
-int back;
+        printf("Number Overflow\n");
 
-scanf("%d \n",back );
+    }
 
-return back;
+    else if(result > DBL_MAX ){
 
-}
+        printf("Number Overflow\n");
+    }
 
-int add(int firstN, int secondN){
+    else{
 
-int back = firstN + secondN;
+      printf("Ergebnis : %lf \n",result );
+    }
 
-return back;
 
-}
-
-void printResults(int res){
-
-printf("Ergebnis : %d \n",res );
-}
+  }
